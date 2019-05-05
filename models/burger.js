@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
 
 
 
-
+// >>>>>> JETSET: OLD ORM MODEL BELOW
 // var orm = require("../config/orm.js");
 
 // var burger = {
