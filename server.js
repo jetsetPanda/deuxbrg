@@ -1,27 +1,37 @@
-var express = require("express");
+const express= require ('express');
 
-var PORT = process.env.PORT || 8082;
+const port = process.env.PORT || 8080;
+const app = express();
 
-var app = express();
+const db = require("./models")
+const path = require('path')
 
-// Serve static content for the app from the "public" directory in the application directory.
-app.use(express.static("public"));
-
-// Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// app.use(express.static("public"));
+app.use('/static', express.static('public'))
+app.use('/node_modules', express.static(path.join(__dirname,'node_modules')));
 
-// Set Handlebars.
-var exphbs = require("express-handlebars");
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
+//handlebars
+const exphbs = require ('express-handlebars')
+app.set('views', "public/views/")
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-// Import routes and give the server access to them.
-var routes = require("./controllers/burgers_controller.js");
+var handlebars = require('handlebars');
 
-app.use(routes);
+// Routes
+require("./routes/html-routes.js")(app);
+// require("./routes/client-api-routes.js")(app);
+// require("./routes/session-api-routes.js")(app);
+// require("./routes/package-api-routes.js")(app);
+// require("./routes/purchase-api-routes")(app);
 
-app.listen(PORT, function() {
-  console.log("Burgrz now listening at localhost:" + PORT);
-});
+db.sequelize.sync().then(function() {
+    app.listen(port, function() {
+      console.log(`Running server on port ${port}`);
+    });
+  });
