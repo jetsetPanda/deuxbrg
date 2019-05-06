@@ -1,10 +1,9 @@
-
 module.exports = function(sequelize, DataTypes) {
     var Burger = sequelize.define("Burger", {
       burger_name: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
+        allowNull: false, //jS: must contain.. min 2 in string.length
+        validate: { //jS: validating that string exists by 2 char, prolly redundant
           len: [1]
         }
       },
@@ -14,12 +13,9 @@ module.exports = function(sequelize, DataTypes) {
         defaultValue: 0
       }
     });
-    return Post;
-  };
+    return Burger;
+};
   
-
-
-
 // >>>>>> JETSET: OLD ORM MODEL BELOW
 // var orm = require("../config/orm.js");
 
